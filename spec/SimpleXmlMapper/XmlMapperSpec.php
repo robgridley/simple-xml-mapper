@@ -80,6 +80,16 @@ class XmlMapperSpec extends ObjectBehavior
         $this->make_it_map_xml_to_object()->manufacturer->founded->shouldHaveType(DateTime::class);
     }
 
+    function it_converts_studly_case_to_camel_case()
+    {
+        $this->make_it_map_xml_to_object()->horsePower->shouldEqual(292);
+    }
+
+    function it_converts_snake_case_to_camel_case()
+    {
+        $this->make_it_map_xml_to_object()->litresPerHundred->shouldEqual(7.7);
+    }
+
     function make_it_map_xml_to_object()
     {
         $file = <<<XML
@@ -106,10 +116,12 @@ class XmlMapperSpec extends ObjectBehavior
     </options>
     <hybrid>false</hybrid>
     <awd>true</awd>
+    <HorsePower>292</HorsePower>
+    <litres_per_hundred>7.7</litres_per_hundred>
 </car>
 XML;
         $xml = new SimpleXMLElement($file);
-        return $this->map($xml, Car::class);
+        return $this->map($xml, Car::class, true);
     }
 
     function getMatchers()
@@ -168,6 +180,16 @@ class Car
      * @var bool
      */
     public $awd;
+
+    /**
+     * @var int
+     */
+    public $horsePower;
+
+    /**
+     * @var float
+     */
+    public $litresPerHundred;
 }
 
 class Manufacturer

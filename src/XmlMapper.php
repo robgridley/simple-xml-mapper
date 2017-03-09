@@ -5,6 +5,7 @@ namespace SimpleXmlMapper;
 use SimpleXMLElement;
 use InvalidArgumentException;
 use UnexpectedValueException;
+use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 
@@ -59,9 +60,10 @@ class XmlMapper
      *
      * @param SimpleXMLElement $xml
      * @param string $class
+     * @param bool $camelize
      * @return mixed
      */
-    public function map(SimpleXMLElement $xml, $class)
+    public function map(SimpleXMLElement $xml, $class, $camelize = false)
     {
         if (!class_exists($class)) {
             throw new InvalidArgumentException("Class [$class] does not exist");
@@ -72,6 +74,10 @@ class XmlMapper
 
         foreach ($xml as $node) {
             $name = $node->getName();
+
+            if ($camelize) {
+                $name = Inflector::camelize($name);
+            }
 
             if (in_array($name, $properties)) {
                 $type = $this->getType($class, $name) ?: $this->defaultType;
