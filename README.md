@@ -103,7 +103,7 @@ $listExtractors = [new ReflectionExtractor];
 $typeExtractors = [new PhpDocExtractor];
 $extractor = new PropertyInfoExtractor($listExtractors, $typeExtractors);
 
-$mapper = new XmlMapper(new PhpDocExtractor);
+$mapper = new XmlMapper($extractor);
 $mapper->addType(DateTime::class, function ($xml) {
     return DateTime::createFromFormat('Y-m-d H:i:s', $xml);
 });
