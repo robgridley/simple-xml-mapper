@@ -24,6 +24,7 @@ Uses reflection to map XML to PHP objects. Inspired in part by [sabre/xml](http:
         </option>
     </options>
     <hybrid>false</hybrid>
+    <awd>true</awd>
 </car>
 ```
 ```php
@@ -68,6 +69,11 @@ class Car
      * @var bool
      */
     public $hybrid;
+
+    /**
+     * @var bool
+     */
+    public $awd;
 }
 
 class Manufacturer

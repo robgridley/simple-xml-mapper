@@ -53,6 +53,7 @@ class XmlMapperSpec extends ObjectBehavior
     {
         $result = $this->make_it_map_xml_to_object()->colours;
         $result->shouldBeArray();
+        $result->shouldHaveCount(2);
         $result->shouldContain('Lapiz Blue');
     }
 
@@ -64,6 +65,7 @@ class XmlMapperSpec extends ObjectBehavior
     function it_maps_object_collections()
     {
         $result = $this->make_it_map_xml_to_object()->options;
+        $result->shouldBeArray();
         $result->shouldHaveCount(2);
         $result->shouldContainType(Option::class);
     }
