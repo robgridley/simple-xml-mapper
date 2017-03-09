@@ -6,14 +6,14 @@ use SimpleXMLElement;
 use InvalidArgumentException;
 use UnexpectedValueException;
 use Symfony\Component\PropertyInfo\Type;
-use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 
 class XmlMapper
 {
     /**
-     * The property type extractor instance.
+     * The property info extractor instance.
      *
-     * @var PropertyTypeExtractorInterface
+     * @var PropertyInfoExtractorInterface
      */
     protected $extractor;
 
@@ -34,10 +34,10 @@ class XmlMapper
     /**
      * Create a new mapper instance.
      *
-     * @param PropertyTypeExtractorInterface $extractor
+     * @param PropertyInfoExtractorInterface $extractor
      * @param Type|null $defaultType
      */
-    public function __construct(PropertyTypeExtractorInterface $extractor, Type $defaultType = null)
+    public function __construct(PropertyInfoExtractorInterface $extractor, Type $defaultType = null)
     {
         $this->extractor = $extractor;
         $this->defaultType = $defaultType ?: new Type('string');
@@ -90,7 +90,7 @@ class XmlMapper
      */
     protected function getProperties($class)
     {
-        return array_keys(get_class_vars($class));
+        return $this->extractor->getProperties($class);
     }
 
     /**

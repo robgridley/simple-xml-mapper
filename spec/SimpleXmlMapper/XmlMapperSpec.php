@@ -4,16 +4,21 @@ namespace spec\SimpleXmlMapper;
 
 use DateTime;
 use SimpleXMLElement;
-use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
+use InvalidArgumentException;
 use SimpleXmlMapper\XmlMapper;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 
 class XmlMapperSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(new PhpDocExtractor);
+        $listExtractors = [new ReflectionExtractor];
+        $typeExtractors = [new PhpDocExtractor];
+        $extractor = new PropertyInfoExtractor($listExtractors, $typeExtractors);
+        $this->beConstructedWith($extractor);
         $this->addType(DateTime::class, function ($xml) {
             return DateTime::createFromFormat('Y-m-d H:i:s', $xml);
         });
@@ -78,7 +83,7 @@ class XmlMapperSpec extends ObjectBehavior
     function make_it_map_xml_to_object()
     {
         $file = <<<XML
-<?xml version='1.0' standalone='yes'?>
+<?xml version="1.0" encoding="utf-8"?>
 <car>
     <manufacturer>
         <name>Volkswagen</name>

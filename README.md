@@ -31,7 +31,9 @@ Uses reflection to map XML to PHP objects. Inspired in part by [sabre/xml](http:
 use DateTime;
 use SimpleXMLElement;
 use SimpleXmlMapper\XmlMapper;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 
 class Car
 {
@@ -96,6 +98,10 @@ class Option
      */
     public $name;
 }
+
+$listExtractors = [new ReflectionExtractor];
+$typeExtractors = [new PhpDocExtractor];
+$extractor = new PropertyInfoExtractor($listExtractors, $typeExtractors);
 
 $mapper = new XmlMapper(new PhpDocExtractor);
 $mapper->addType(DateTime::class, function ($xml) {
