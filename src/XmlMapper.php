@@ -4,6 +4,7 @@ namespace SimpleXmlMapper;
 
 use SimpleXMLElement;
 use InvalidArgumentException;
+use UnexpectedValueException;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
 
@@ -179,11 +180,16 @@ class XmlMapper
     {
         $value = (string)$xml;
 
-        if (is_numeric($value)) {
-            return (bool)$value;
+        switch ($value) {
+            case '0':
+            case 'false':
+                return false;
+            case '1':
+            case 'true':
+                return true;
+            default:
+                throw new UnexpectedValueException("Could not convert [$value] to boolean");
         }
-
-        return $value == 'true';
     }
 
     /**
