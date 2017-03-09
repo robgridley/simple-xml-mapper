@@ -91,12 +91,11 @@ class Option
     public $name;
 }
 
-$xml = new SimpleXMLElement(file_get_contents('test.xml'));
-
 $mapper = new XmlMapper(new PhpDocExtractor);
 $mapper->addType(DateTime::class, function ($xml) {
     return DateTime::createFromFormat('Y-m-d H:i:s', $xml);
 });
 
+$xml = new SimpleXMLElement(file_get_contents('car.xml'));
 $car = $mapper->map($xml, Car::class);
 ```
