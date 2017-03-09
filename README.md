@@ -2,7 +2,7 @@
 Uses reflection to map XML to PHP objects. Inspired in part by [sabre/xml](http://sabre.io/xml/valueobjects/).
 ## Usage Example
 ```xml
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <car>
     <manufacturer>
         <name>Volkswagen</name>

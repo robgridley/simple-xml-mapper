@@ -115,8 +115,8 @@ XML;
     function getMatchers()
     {
         return [
-            'containType' => function($result, $type) {
-                foreach($result as $item) {
+            'containType' => function ($result, $type) {
+                foreach ($result as $item) {
                     if (!$item instanceof $type) {
                         return false;
                     }
