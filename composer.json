@@ -1,0 +1,22 @@
+{
+    "name": "robgridley/simple-xml-mapper",
+    "description": "Uses reflection to map XML to PHP objects.",
+    "keywords": ["xml", "mapper", "object", "reflection"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rob Gridley",
+            "email": "me@robgridley.com"
+        }
+    ],
+    "require": {
+        "symfony/property-info": "^3.2",
+        "phpdocumentor/reflection-docblock": "^3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "SimpleXmlMapper\\": "src/"
+        }
+    }
+}
