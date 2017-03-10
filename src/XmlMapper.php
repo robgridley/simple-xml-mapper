@@ -5,7 +5,6 @@ namespace SimpleXmlMapper;
 use SimpleXMLElement;
 use InvalidArgumentException;
 use UnexpectedValueException;
-use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
 
@@ -17,6 +16,13 @@ class XmlMapper
      * @var PropertyInfoExtractorInterface
      */
     protected $extractor;
+
+    /**
+     * The property name converter instance.
+     *
+     * @var PropertyNameConverterInterface|null
+     */
+    protected $nameConverter;
 
     /**
      * The default type instance.
@@ -36,12 +42,13 @@ class XmlMapper
      * Create a new mapper instance.
      *
      * @param PropertyInfoExtractorInterface $extractor
-     * @param Type|null $defaultType
+     * @param PropertyNameConverterInterface|null $nameConverter
      */
-    public function __construct(PropertyInfoExtractorInterface $extractor, Type $defaultType = null)
+    public function __construct(PropertyInfoExtractorInterface $extractor, PropertyNameConverterInterface $nameConverter = null)
     {
         $this->extractor = $extractor;
-        $this->defaultType = $defaultType ?: new Type('string');
+        $this->nameConverter = $nameConverter;
+        $this->defaultType = new Type('string');
     }
 
     /**
@@ -60,10 +67,9 @@ class XmlMapper
      *
      * @param SimpleXMLElement $xml
      * @param string $class
-     * @param bool $camelize
      * @return mixed
      */
-    public function map(SimpleXMLElement $xml, $class, $camelize = false)
+    public function map(SimpleXMLElement $xml, $class)
     {
         if (!class_exists($class)) {
             throw new InvalidArgumentException("Class [$class] does not exist");
@@ -75,8 +81,8 @@ class XmlMapper
         foreach ($xml as $node) {
             $name = $node->getName();
 
-            if ($camelize) {
-                $name = Inflector::camelize($name);
+            if ($this->nameConverter) {
+                $name = $this->nameConverter->convert($name);
             }
 
             if (in_array($name, $properties)) {

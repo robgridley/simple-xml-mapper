@@ -5,8 +5,8 @@ namespace spec\SimpleXmlMapper;
 use DateTime;
 use SimpleXMLElement;
 use PhpSpec\ObjectBehavior;
-use InvalidArgumentException;
 use SimpleXmlMapper\XmlMapper;
+use SimpleXmlMapper\CamelCasePropertyNameConverter;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
@@ -18,7 +18,8 @@ class XmlMapperSpec extends ObjectBehavior
         $listExtractors = [new ReflectionExtractor];
         $typeExtractors = [new PhpDocExtractor];
         $extractor = new PropertyInfoExtractor($listExtractors, $typeExtractors);
-        $this->beConstructedWith($extractor);
+        $nameConverter = new CamelCasePropertyNameConverter;
+        $this->beConstructedWith($extractor, $nameConverter);
         $this->addType(DateTime::class, function ($xml) {
             return DateTime::createFromFormat('Y-m-d H:i:s', $xml);
         });
